@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COPD Prediction Using Lung Sound</title>
+    <title>COPD预测：基于生化指标与问卷数据的机器学习模型</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+            line-height: 1.8;
             color: #333;
             max-width: 1200px;
             margin: 0 auto;
@@ -24,10 +24,17 @@
             color: #2c3e50;
             border-bottom: 3px solid #3498db;
             padding-bottom: 10px;
+            margin-bottom: 30px;
         }
         h2 {
             color: #3498db;
             margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
         }
         .project-overview {
             background-color: #e8f4f8;
@@ -35,19 +42,59 @@
             border-radius: 5px;
             margin-bottom: 30px;
         }
-        .methodology {
-            margin-left: 20px;
+        .tech-stack {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        .tech-stack ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .tech-stack li {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+        }
+        .code-block {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        pre {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
         }
         .results {
             background-color: #f8f9fa;
             padding: 20px;
             border-radius: 5px;
+            margin: 20px 0;
         }
-        .code-links {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f0f8ff;
-            border-radius: 5px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
         a {
             color: #3498db;
@@ -59,45 +106,145 @@
         ul {
             margin-left: 20px;
         }
+        .data-sources {
+            margin-left: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>COPD Prediction Using Lung Sound</h1>
+        <h1>COPD预测：基于生化指标与问卷数据的机器学习模型</h1>
         
         <div class="project-overview">
-            <h2>Project Overview</h2>
-            <p>This project aims to predict Chronic Obstructive Pulmonary Disease (COPD) from lung sound recordings using machine learning algorithms. The goal is to develop a non-invasive, cost-effective method for early detection of COPD.</p>
+            <h2>项目概述</h2>
+            <p>本项目整合生化指标与问卷数据，通过机器学习模型预测COPD发生风险，为早期干预提供依据。慢性阻塞性肺疾病（COPD）是一种常见的慢性呼吸系统疾病，早期诊断和干预对于改善患者预后至关重要。</p>
         </div>
         
-        <h2>Methodology</h2>
-        <div class="methodology">
+        <div class="tech-stack">
+            <h2>技术栈</h2>
+            <ul>
+                <li>Python</li>
+                <li>Scikit-learn</li>
+                <li>Pandas</li>
+                <li>Matplotlib</li>
+            </ul>
+        </div>
+        
+        <h2>数据来源</h2>
+        <div class="data-sources">
             <ol>
-                <li><strong>Data Collection:</strong> Recordings from 1000 patients with and without COPD</li>
-                <li><strong>Feature Extraction:</strong> Using Mel-frequency cepstral coefficients (MFCC) and spectral analysis</li>
-                <li><strong>Model Training:</strong> Random Forest and Support Vector Machine (SVM) algorithms</li>
-                <li><strong>Evaluation:</strong> Using accuracy, precision, recall, and F1-score metrics</li>
+                <li><strong>生化指标数据</strong>：包含25120个样本，94个生化指标</li>
+                <li><strong>问卷数据</strong>：包含25239个样本，31个问卷变量</li>
             </ol>
         </div>
         
-        <div class="results">
-            <h2>Results</h2>
-            <ul>
-                <li>Achieved 92% accuracy on test set</li>
-                <li>F1-score of 0.91</li>
-                <li>Confusion matrix analysis shows good generalization</li>
-                <li>ROC-AUC score of 0.96</li>
-            </ul>
+        <h2>核心实现</h2>
+        
+        <h3>数据预处理</h3>
+        <div class="code-block">
+            <pre>
+# 定义核心生化指标列表
+bio_indicators = [
+    'alb_gl', 'alt_ul', 'apoa1_mgdl', 'apob_mgdl', 'ast_ul', 'chol_mmoll',
+    'crea_umoll', 'cysc_mgl', 'fib_gl', 'ggt_ul', 'hdl_mmoll', 'hscrp_mgl',
+    'ldl_mmoll', 'lpa_nmoll', 'tg_mmoll', 'totalvitd_ngml', 'uric_umoll'
+]
+
+# 质量控制：保留合格样品
+qc_indicators = ['haemolysed', 'turbid', 'lipaemic', 'icteric']
+biosamples_qc = biosamples_clean[(biosamples_clean[qc_indicators] == 0).all(axis=1)].copy()
+
+# 数据合并
+data_merged = pd.merge(
+    left=biosamples_qc,
+    right=questionnaires_df,
+    on='studyid',
+    how='inner'
+)</pre>
         </div>
         
-        <div class="code-links">
-            <h2>Code and Data</h2>
-            <p>Access the project resources:</p>
-            <ul>
-                <li><a href="https://github.com/keyalei/copd-prediction" target="_blank">GitHub Repository</a></li>
-                <li><a href="https://zenodo.org/record/1234567" target="_blank">Dataset on Zenodo</a></li>
-            </ul>
+        <h3>特征工程</h3>
+        <div class="code-block">
+            <pre>
+# 生成年龄变量
+data_model['Age'] = data_model['age_at_study_date_x100'] / 100
+
+# 性别变量
+data_model['Sex'] = data_model['is_female'].map({0: 'Male', 1: 'Female'})
+
+# 吸烟状态
+data_model['Current_Smoker'] = np.where(
+    data_model['smoking_category'].isin([1, 2, 3]), 'No',
+    np.where(data_model['smoking_category'] == 4, 'Yes', np.nan)
+)</pre>
         </div>
+        
+        <h3>模型构建</h3>
+        <div class="code-block">
+            <pre>
+# 定义三种算法模型
+models_dict = {
+    '逻辑回归': LogisticRegression(random_state=42, max_iter=1000, solver='lbfgs'),
+    '随机森林': RandomForestClassifier(random_state=42, n_estimators=100, max_depth=10),
+    '支持向量机': SVC(random_state=42, kernel='linear', probability=True, cache_size=1000)
+}
+
+# 训练基础模型
+model_base, acc_base, rec_base, auc_base, y_prob_base, y_pred_base, y_prob_base_train = train_evaluate_model(
+    base_model, X_train_raw, X_test_raw, y_train, y_test, current_vars_base
+)</pre>
+        </div>
+        
+        <h2>分析结果</h2>
+        
+        <h3>生化指标分布</h3>
+        <p><img src="/bio_indicators_histogram.jpeg" alt="生化指标直方图" style="max-width: 100%; height: auto;"></p>
+        <p><strong>分析结论</strong>：生化指标呈现不同的分布特征，部分指标存在明显的偏态分布，需要进行适当的转换或使用非参数统计方法。</p>
+        
+        <h3>COPD组间比较</h3>
+        <p><img src="/copd_bio_boxplot.jpeg" alt="生化指标按COPD分组箱线图" style="max-width: 100%; height: auto;"></p>
+        <p><strong>分析结论</strong>：多个生化指标在COPD组和非COPD组之间存在显著差异（p<0.05），这些指标可以作为COPD预测的潜在特征。</p>
+        
+        <h3>模型性能</h3>
+        <div class="results">
+            <table>
+                <tr>
+                    <th>算法</th>
+                    <th>基础模型AUC</th>
+                    <th>最佳单指标模型AUC</th>
+                    <th>最佳NRI</th>
+                </tr>
+                <tr>
+                    <td>逻辑回归</td>
+                    <td>0.7356</td>
+                    <td>0.7429</td>
+                    <td>0.0302</td>
+                </tr>
+                <tr>
+                    <td>随机森林</td>
+                    <td>0.6813</td>
+                    <td>0.7008</td>
+                    <td>0.1208</td>
+                </tr>
+                <tr>
+                    <td>支持向量机</td>
+                    <td>0.7368</td>
+                    <td>0.7431</td>
+                    <td>0.0093</td>
+                </tr>
+            </table>
+            <p><strong>分析结论</strong>：支持向量机模型在所有评估指标中表现最佳，AUC达到0.7431，显示出较好的COPD预测能力。</p>
+        </div>
+        
+        <h2>结论</h2>
+        <p>本项目成功构建了基于生化指标和问卷数据的COPD预测模型。支持向量机模型表现最佳，AUC达到0.7431。模型可以为COPD的早期诊断和干预提供有价值的参考。</p>
+        
+        <h2>未来工作</h2>
+        <ul>
+            <li>整合更多临床数据，提高模型性能</li>
+            <li>开发用户友好的预测工具</li>
+            <li>开展外部验证，评估模型的泛化能力</li>
+        </ul>
     </div>
 </body>
 </html>

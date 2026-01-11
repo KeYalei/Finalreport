@@ -1,3 +1,6 @@
+        <h3>COPD组间比较</h3>
+        <p><img src="copd_bio_boxplot.jpeg" alt="生化指标按COPD分组箱线图" style="max-width: 100%; height: auto;"></p>
+        <p><strong>分析结论</strong>：多个生化指标在COPD组和非COPD组之间存在显著差异（p<0.05），这些指标可以作为COPD预测的潜在特征。</p>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -248,7 +251,19 @@ model_base, acc_base, rec_base, auc_base, y_prob_base, y_pred_base, y_prob_base_
                 </tr>
             </table>
             <p><strong>分析结论</strong>：支持向量机模型在所有评估指标中表现最佳，AUC达到0.7431，显示出较好的COPD预测能力。</p>
+            
+            <p><img src="model1.jpg" alt="逻辑回归预测模型性能" style="max-width: 100%; height: auto;"></p>
+            <p><strong>逻辑回归预测模型性能</strong>：逻辑回归基础模型综合性能最优。</p>
+
+            <p><img src="model2.jpg" alt="随机森林预测模型性能" style="max-width: 100%; height: auto;"></p>
+            <p><strong>随机森林预测模型性能</strong>：随机森林模型综合性能最差。</p>
+
+            <p><img src="model3.jpg" alt="SVM预测模型性能" style="max-width: 100%; height: auto;"></p>
+            <p><strong>SVM预测模型性能</strong>：SVM 的基础模型增加胱抑素 C 整合模型为最优 COPD 预测模型。</p>            
+            
         </div>
+        
+
         
         <h2>结论</h2>
         <p>本项目成功构建了基于生化指标和问卷数据的COPD预测模型。支持向量机模型表现最佳，AUC达到0.7431。模型可以为COPD的早期诊断和干预提供有价值的参考。</p>
